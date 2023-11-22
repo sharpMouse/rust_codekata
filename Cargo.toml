@@ -1,0 +1,15 @@
+[package]
+name = "codekata"
+version = "0.2.0"
+edition = "2021"
+authors = ["Vasily Starostin"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+itertools = "*"
+# const_format = "*"
+lazy_static = "*"
+bit-vec = "*"
+#fnv = "*"
+#rustc-hash = "*"

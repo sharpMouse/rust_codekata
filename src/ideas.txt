@@ -1,6 +1,4 @@
-add to source control
 remove lazy_static in favor of functions (or new night features)
-run clippy and fmt
 add readme
 start commenting at site
 выложить словарь на гитхаб

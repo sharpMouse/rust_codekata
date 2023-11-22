@@ -19,9 +19,7 @@ impl Money {
     }
 
     fn raw(value: u64) -> Money {
-        Money {
-            value,
-        }
+        Money { value }
     }
 }
 
@@ -31,9 +29,11 @@ impl std::ops::AddAssign<Money> for Money {
     }
 }
 
-impl<'a> std::iter::Sum<&'a&'a Money> for Money {
+impl<'a> std::iter::Sum<&'a &'a Money> for Money {
     fn sum<I>(iter: I) -> Self
-    where I: Iterator<Item = &'a&'a Money> {
+    where
+        I: Iterator<Item = &'a &'a Money>,
+    {
         Money::raw(iter.map(|x| x.value).sum())
     }
 }
@@ -70,7 +70,10 @@ fn check_money() {
     assert_eq!(Money::new(100).to_string(), "100");
     assert_eq!(Money::raw(199).to_string(), "1.99");
     assert_eq!(Money::raw(5).to_string(), "0.05");
-    assert_eq!([&Money::new(2), &Money::new(4)].iter().sum::<Money>(), Money::new(6));
+    assert_eq!(
+        [&Money::new(2), &Money::new(4)].iter().sum::<Money>(),
+        Money::new(6)
+    );
 }
 
 ///////////////////////////////////////////////////////////
@@ -98,7 +101,7 @@ fn calculate_ps_onefree(moneys: &[&Money], count: usize) -> Money {
     let free_count = moneys.len() / count;
     let mut money_copy = Vec::from(moneys);
     money_copy.select_nth_unstable(free_count);
-    
+
     // Skip free pieces and calc the others
     money_copy[free_count..].iter().sum()
 }
@@ -190,14 +193,17 @@ impl Price {
     fn new_nth(value: u64, count: usize, total: u64) -> Price {
         Price {
             cost: Money::new(value),
-            strategy: PricingStrategy::Nth{ count, total: Money::new(total) },
+            strategy: PricingStrategy::Nth {
+                count,
+                total: Money::new(total),
+            },
         }
     }
 
     fn new_onefree(value: u64, count: usize) -> Price {
         Price {
             cost: Money::new(value),
-            strategy: PricingStrategy::OneFree{ count },
+            strategy: PricingStrategy::OneFree { count },
         }
     }
 }

@@ -1,4 +1,5 @@
-use crate::common::{WORDS_PLAIN, WordsStoragePlain};
+#![cfg(test)]
+use crate::common::{WordsStoragePlain, WORDS_PLAIN};
 
 // Readable variant //
 
@@ -51,11 +52,18 @@ fn find_subwords_fast() -> usize {
 
 fn find_subwords_ext(words: &WordsStoragePlain, word_len: usize, min_len: usize) -> usize {
     let n_words_iter = words.iter().filter(|w| w.chars().count() == word_len);
-    n_words_iter.map(|w| is_two_words_fast_ext(words, word_len, min_len, w)).sum()
+    n_words_iter
+        .map(|w| is_two_words_fast_ext(words, word_len, min_len, w))
+        .sum()
 }
 
-fn is_two_words_fast_ext(words: &WordsStoragePlain, word_len: usize, min_len: usize, word: &str) -> usize {
-    for len in min_len..=word_len-min_len {
+fn is_two_words_fast_ext(
+    words: &WordsStoragePlain,
+    word_len: usize,
+    min_len: usize,
+    word: &str,
+) -> usize {
+    for len in min_len..=word_len - min_len {
         let subword1 = String::from_iter(word.chars().take(len));
         if words.binary_search(&subword1.as_str()).is_ok() {
             let subword2 = String::from_iter(word.chars().skip(len));
@@ -74,7 +82,7 @@ fn subwords() {
         let time = std::time::Instant::now();
         let set_count = func();
         println!("sw time: {:.2?}\n", time.elapsed());
-        
+
         assert_eq!(set_count, 14276);
     }
 }

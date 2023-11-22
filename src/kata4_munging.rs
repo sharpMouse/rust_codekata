@@ -4,7 +4,6 @@ use crate::common::DATA_DIR;
 use itertools::Itertools;
 use std::path::Path;
 
-
 fn parse_weather(numbers_line: &str) -> (u8, u8, u8) {
     numbers_line
         .split(&[' ', '*'])
@@ -26,9 +25,9 @@ fn parse_football(numbers_line: &str) -> (String, u8, u8) {
 fn get_smallest_spread<Type>(
     filename: &Path,
     headlines: usize,
-    filter_str: &str, 
-    parser: &dyn Fn(&str) -> (Type, u8, u8)) 
-    -> Type {
+    filter_str: &str,
+    parser: &dyn Fn(&str) -> (Type, u8, u8),
+) -> Type {
     let content = std::fs::read_to_string(filename).unwrap();
     content
         .lines()
@@ -56,7 +55,6 @@ fn test_weather_spread() {
 
 #[test]
 fn test_football_spread() {
-    
     let filename = DATA_DIR.join("football.dat");
     assert_eq!("Aston_Villa", get_smallest_spread_football(&filename));
 }
